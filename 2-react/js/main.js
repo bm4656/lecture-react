@@ -6,6 +6,10 @@ class App extends React.Component {
     };
   }
 
+  handleChangeInput(event) {
+    this.setState({ searchKeyword: event.target.value });
+  }
+
   render() {
     return (
       <>
@@ -19,6 +23,7 @@ class App extends React.Component {
               placeholder='검색어를 입력하세요'
               autoFocus
               value={this.state.searchKeyword}
+              onChange={(event) => this.handleChangeInput(event)}
             />
             <button type='reset' className='btn-reset'></button>
           </form>
