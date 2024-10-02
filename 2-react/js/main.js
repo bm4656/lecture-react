@@ -22,13 +22,13 @@ class App extends React.Component {
   }
 
   handleReset() {
-    this.setState({ searchKeyword: '' });
+    this.setState({ searchKeyword: '', submitted: false });
   }
 
   handleChangeInput(event) {
     const searchKeyword = event.target.value;
 
-    if (searchKeyword.length <= 0) {
+    if (searchKeyword.length <= 0 && this.state.submitted) {
       return this.handleReset();
     }
 
