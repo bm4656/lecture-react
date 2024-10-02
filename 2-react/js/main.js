@@ -17,12 +17,13 @@ class App extends React.Component {
       searchKeyword: '',
       searchResult: [],
       submitted: false,
+      selectedTab: TabType.KEYWORD,
+      tabView: store.getKeywordList(),
     };
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('TODO: handleSubmit', this.state.searchKeyword);
     this.search(this.state.searchKeyword);
   }
 
@@ -43,6 +44,14 @@ class App extends React.Component {
     }
 
     this.setState({ searchKeyword: event.target.value });
+  }
+
+  handleClick(tabType) {
+    if (tabType === TabType.HISTORY) {
+      this.setState({ selectedTab: tabType, tabView: store.getHistoryList() });
+    } else {
+      this.setState({ selectedTab: tabType, tabView: store.getKeywordList() });
+    }
   }
 
   render() {
@@ -77,12 +86,32 @@ class App extends React.Component {
         <div className='empty-box'>검색 결과가 없습니다</div>
       );
 
-    const tabs = (
-      <ul className='tabs'>
-        {Object.values(TabType).map((tabType) => {
-          return <li key={tabType}>{TabLabel[tabType]}</li>;
-        })}
+    const tabView = (
+      <ul className='list'>
+        {this.state.tabView.map((item) => (
+          <li key={item.id}>
+            {item.id}. {item.keyword}
+          </li>
+        ))}
       </ul>
+    );
+
+    const tabs = (
+      <>
+        <ul className='tabs'>
+          {Object.values(TabType).map((tabType) => {
+            return (
+              <li
+                className={this.state.selectedTab === tabType ? 'active' : ''}
+                onClick={() => this.handleClick(tabType)}
+                key={tabType}>
+                {TabLabel[tabType]}
+              </li>
+            );
+          })}
+        </ul>
+        {tabView}
+      </>
     );
 
     return (
