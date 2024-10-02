@@ -6,6 +6,7 @@ class App extends React.Component {
     this.state = {
       searchKeyword: '',
       searchResult: [],
+      submitted: false,
     };
   }
 
@@ -17,7 +18,7 @@ class App extends React.Component {
 
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
-    this.setState({ searchResult });
+    this.setState({ searchResult, submitted: true });
   }
 
   handleReset() {
@@ -56,20 +57,19 @@ class App extends React.Component {
             )}
           </form>
           <div className='content'>
-            {this.state.searchResult.length > 0 ? (
-              <ul className='result'>
-                {this.state.searchResult.map((item) => {
-                  return (
-                    <li>
-                      <img src={item.imageUrl} alt={item.name} />
-                      <p>{item.name}</p>
+            {this.state.submitted &&
+              (this.state.searchResult.length > 0 ? (
+                <ul className='result'>
+                  {this.state.searchResult.map(({ id, imageUrl, name }) => (
+                    <li key={id}>
+                      <img src={imageUrl} />
+                      <p>{name}</p>
                     </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <div className='empty-box'>검색 결과가 없습니다.</div>
-            )}
+                  ))}
+                </ul>
+              ) : (
+                <div className='empty-box'>검색 결과가 없습니다</div>
+              ))}
           </div>
         </div>
       </>
