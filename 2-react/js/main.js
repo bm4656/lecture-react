@@ -34,7 +34,7 @@ class App extends React.Component {
 
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
-    this.setState({ searchResult, submitted: true });
+    this.setState({ searchKeyword, searchResult, submitted: true });
   }
 
   handleReset() {
@@ -53,9 +53,9 @@ class App extends React.Component {
 
   handleClick(tabType) {
     if (tabType === TabType.HISTORY) {
-      this.setState({ selectedTab: tabType, tabView: store.getHistoryList() });
+      this.setState({ selectedTab: tabType });
     } else {
-      this.setState({ selectedTab: tabType, tabView: store.getKeywordList() });
+      this.setState({ selectedTab: tabType });
     }
   }
 
@@ -95,7 +95,7 @@ class App extends React.Component {
       <ul className='list'>
         {this.state.keywordList.map((item, index) => {
           return (
-            <li key={item.id}>
+            <li key={item.id} onClick={() => this.search(item.keyword)}>
               <span className='number'>{index + 1}</span>
               <span>{item.keyword}</span>
             </li>
